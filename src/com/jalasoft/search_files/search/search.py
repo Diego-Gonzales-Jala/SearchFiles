@@ -1,10 +1,11 @@
 import os
 
 
-class SearchDirectory:
+class Search:
 
     def __init__(self, path):
         self.path = path
+        self.path_absolute = ''
 
     def get_directory(self):
         self. path = os.listdir(self.path)
@@ -13,11 +14,16 @@ class SearchDirectory:
     def set_directory(self, newPath):
         self.path = newPath
 
+    def get_path_absolute(self, newPath):
+        self.path_absolute = os.path.abspath(newPath)
+        return self.path_absolute
 
 if __name__ == '__main__':
-    sDirecotry = SearchDirectory("C:\\Python")
+    sDirecotry = Search("C:\\Python")
     list = sDirecotry.get_directory()
     print(list)
+    obj = sDirecotry.get_path_absolute("C:\\Python")
+    print(obj)
 
 #dir = os.getcwd()
 
