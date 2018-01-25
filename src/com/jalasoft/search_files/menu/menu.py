@@ -18,58 +18,51 @@ class Menu:
     def __init__(self):
         self.name_file = ''
         self.path_file = ''
+        self.size_file = 0
 
     def search_by_name(self, name, path):
         return path + name
 
     def search_by_size(self):
         return "sl"
-    def search_directory_by_option(self,search_disk):
-        if search_disk == 1:
-            print("hello")
-        elif search_disk > 1:
-            self.path_file = str(raw_input('Enter directory name:'))
-            get_disk_s = Util_Disk()
-            print (get_disk_s.get_disk(search_disk), self.path_file)
 
-    def search_file_by_option(self,search_type_file):
-        if search_type_file == 1:
-            print (self.search_by_size())
+    def search_option_one(self):
+        self.size_file = str(raw_input('Enter file size:'))
+        self.path_file = str(raw_input('Enter the path:'))
 
-        elif search_type_file == 2:
-            self.name_file = str(raw_input('Enter file name:'))
-            self.path_file = str(raw_input('Enter the path:'))
-            # validate_data = Validator(name_file,path_file)
-            print (self.search_by_name(self. name_file,self.path_file))
+    def search_option_two(self):
+        self.name_file = str(raw_input('Enter file name:'))
+        self.path_file = str(raw_input('Enter the path:'))
+        # validate_data = Validator(name_file,path_file)
+        print (self.search_by_name(self.name_file, self.path_file))
 
+    def search_by_option(self, option):
+        if is_number(option) == True:
+            if option == 1:
+                self.search_option_one()
+            elif option == 2:
+                self.search_option_two()
         else:
-            print ("Error - Does not exist this option")
+            return "Error :"
 
     def menu_main(self):
-        print(" -------------- Search directories and files ----------------------")
-        print ("1 - Directory")
-        print ("2 - Files")
-        option_search = int(input('Enter option to search the file or directory:'))
-        self.sub_menu(option_search)
+        print (" -------------- Search directories and files ----------------------")
+        print ("Following devices are available to search :)")
+        get_disks = Util_Disk()
+        get_disks.get_disk_partition()
+        self.sub_menu()
 
-    def sub_menu(self, option_search):
-        if option_search == 1:
-            print(" 1 All disk")
-            get_disks = Util_Disk()
-            get_disks.get_disk_partition()
-            option_search_directory = int(input('Enter option:'))
-            self.search_directory_by_option(option_search_directory)
-
-        elif option_search == 2:
-            print(' Search file by:')
+    def sub_menu(self, catch=None):
+        try:
+            print(' Search file or folder by:')
             print ("1 - Size")
-            print ("2 - name")
+            print ("2 - Name")
+            #print ("3 - List all files")
+            #print ("4 - List all folders")
             option_search_file = int(input('Enter option:'))
-
-            self.search_file_by_option(option_search_file)
-
-        else:
-            print("Error - option entered ")
+            self.search_by_option(option_search_file)
+        except ValueError:
+            print("Oops!  That was no valid number.  Try again...")
 
 
 menu_search = Menu()
