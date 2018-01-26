@@ -18,12 +18,34 @@ class Search:
         self.path_absolute = os.path.abspath(newPath)
         return self.path_absolute
 
+    def get_full_path(self, path):
+        for root, directories, files in os.walk(path):
+            # for dir in directories:
+            # dirx = os.path.join(root, dir)
+            # print(dirx)
+
+            for file in files:
+                x = os.path.join(root, file)
+                print(x)
+
 if __name__ == '__main__':
     sDirecotry = Search("C:\\Python")
     list = sDirecotry.get_directory()
     print(list)
     obj = sDirecotry.get_path_absolute("C:\\Python")
     print(obj)
+    sDirecotry.get_full_path("C:\\Python")
+
+
+#    for root, directories, files in os.walk("C:\\Python"):
+        #for dir in directories:
+            #dirx = os.path.join(root, dir)
+            #print(dirx)
+
+#        for file in files:
+#            x = os.path.join(root, file)
+#            print(x)
+
 
 #dir = os.getcwd()
 
