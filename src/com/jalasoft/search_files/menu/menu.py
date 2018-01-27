@@ -1,6 +1,6 @@
 import psutil
 
-class Util_Disk:
+class UtilDisk:
 
     def get_disk(self,option):
         disk_part = psutil.disk_partitions()
