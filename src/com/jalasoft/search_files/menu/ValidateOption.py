@@ -15,7 +15,12 @@ class ValidateOption:
     
     def is_positive(self,value):
         try:
-            if self.is_number(value) and value >= 0:
-                return True
+            if self.is_number(value):
+                if int(value) >= 0:
+                    return True
+                else:
+                    return False
+            else:
+                return False
         except ValueError:
             return False
