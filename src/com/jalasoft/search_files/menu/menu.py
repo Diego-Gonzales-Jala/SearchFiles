@@ -1,5 +1,7 @@
 from ValidateOption import ValidateOption
 import psutil
+from src.com.jalasoft.search_files.utils.validator import Validator
+from src.com.jalasoft.search_files.search.directory import Directory
 
 
 class Util_Disk(object):
@@ -24,17 +26,22 @@ class Menu:
         self.size_file = 0
         self.validate = ValidateOption()
         self.get_disks = Util_Disk()
-        #self.validate_data = Validator(name_file,path_file)
-        #self.search = Search()
 
+        self.validate_data = Validator()
+        self.search = Directory()
+
+    def print_to_result(self, list_result):
+        for dir in list_result:
+            print(dir)
 
     def search_option_one(self):
+
         self.size_file = input('Enter file size:')
         self.path_file = input('Enter the path:')
         if self.validate.is_positive(self.size_file) == True:
             print ("--",self.size_file)
             if self.validate_data.validate_path(self.path_file) == True:
-                print(self.search.search_by_size(self.size_file,self.path_file))
+                self.print_to_result(self.search.search_by_size(self.size_file,self.path_file))
             else:
                 print ("Error: Oops!  That was no valid path.  Try again...")
                 self.search_option_one()
@@ -44,14 +51,33 @@ class Menu:
 
 
     def search_option_two(self):
-        self.name_file = str(input('Enter file name:'))
-        self.path_file = str(input('Enter the path:'))
+        self.name_file = input('Enter file name:')
+        self.path_file = input('Enter the path:')
         if  self.validate_data.validate_name(self.name_file) == True and self.validate_data.validate_path(self.path_file) == True:
-            print (self.search_by_name(self.name_file, self.path_file))
+            self.print_to_result(self.search.search_by_name(self.name_file, self.path_file))
         else:
             print ("Error: Oops!  That was no valid name or path.  Try again...")
             self.search_option_two()
-            
+
+    def search_option_three(self):
+        self.path = str(input('Enter the path e.g. "C:\\":'))
+        if self.validate_data.validate_path(self.path) == True:
+            self.print_to_result(self.search.get_all_files(self.path))
+        else:
+            print ("Error: Oops!  That was no valid  path.  Try again...")
+            self.search_option_three()
+
+    def search_option_four(self):
+        self.path = str(input('Enter the path e.g. "C:\\python":'))
+        if self.validate_data.validate_path(self.path) == True:
+            self.print_to_result(self.search.get_all_directories(self.path))
+        else:
+            print ("Error: Oops!  That was no valid  path.  Try again...")
+            self.search_option_four()
+
+
+    def search_option_five(self):
+        print ("In building - search by extension")
 
     def search_by_option(self, option):
         if self.validate.is_positive(option) == True:
@@ -59,6 +85,12 @@ class Menu:
                 self.search_option_one()
             elif option == 2:
                 self.search_option_two()
+            elif option == 3:
+                self.search_option_three()
+            elif option == 4:
+                self.search_option_four()
+            elif option == 5:
+                self.search_option_five()
             elif option == 0:
                 exit()
         else:
@@ -75,13 +107,19 @@ class Menu:
 
     def sub_menu(self, catch=None):
         try:
-            print(' Search file or folder by:')
-            print ("1 - Size")
-            print ("2 - Name")
-            #print ("3 - List all files")
-            #print ("4 - List all folders")
-            option_search_file = int(input('Enter option:'))
-            self.search_by_option(option_search_file)
+            option_search_file = 10
+            while (option_search_file > 0):
+
+                print(' Search file or folder by:')
+                print ("1 - File size")
+                print ("2 - File name")
+                print ("3 - List all files")
+                print ("4 - List all folders")
+                print ("5 - Extension")
+                option_search_file = int(input('Enter option:'))
+                self.search_by_option(option_search_file)
+
+
         except ValueError:
             print("Oops!  That was no valid number.  Try again...")
 
