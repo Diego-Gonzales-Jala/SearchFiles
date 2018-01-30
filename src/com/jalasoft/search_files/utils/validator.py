@@ -1,73 +1,53 @@
 import os
 
-
 class Validator:
+# Constructor where initial parameters include name_path==directory+path and the other is name_file
     def __init__(self,  name_path = '', name_file = ''):
         self.name_path = name_path
         self.name_file = name_file
         self.no_valid_char_path = ['/', '*', '?', '"', '<','>','#']
 
-    def split_path(self,path):
+    def split_path(self, path):
         return list(path)
 
     def validator_exist_path(self, absolute_path):
         if absolute_path != '':
+            #f absolutePath == os.path.join("name_path", "name_file"):
             if os.path.exists(absolute_path) == True:
-                return True
+                return os.path.isdir(absolute_path)
         else:
             False
 
-    def validator_non_allow_name_file_characters(self, path):
+# Path validator that walk all path by fragmenting it and comparing non of this chars /*,?"<>,# are valid.
+    def validate_path(self, path):
         lenght = len(path)
         path_frag = self.split_path(path)
 
         for i in range (lenght):
             for j in range (len(self.no_valid_char_path)):
+                #print (self.no_valid_char_path[j])
                 if self.no_valid_char_path[j] == path_frag[i]:
                     value = False
                     break
                 else:
                     value = True
-
         return value
 
-    def validator_allowed_name_dir_characters(self, name_dir):
-        while chr(name_dir) == "C" | "c" | "d" | "e" | "E" | "f" | "F" | "g" | "G":
+    def validate_file_name(self, file_name):
+        while chr(file_name) == "C" | "c" | "d" | "D" | "e" | "E" | "f" | "F":
             return True
         else:
-            'The filename, directory name, or volume label syntax is incorrect.'
+            return False
 
-    def validator_size_absolute_path(self, path_absolute):
-        self.path_absolute = 'C:\\Python'
-        os.path.getsize(path_absolute)
-
-"""      
-        os.path.isdir()
-        os.path.basename(path)
-        os.path.exists()
-        os.pathconf(path)
- """
+    def validate_file_size(self, path):
+        return os.path.getsize(path)
 
 validatepat = Validator()
 #print ("path ",validatepat.validator_exist_path('C:\Python\Python36-32'))
-print ("",validatepat.validator_non_allow_name_file_characters('C:\Python\Python#36-32\mono'))
+print ("",validatepat.validate_path('C:\Python\#*'))
+#print ("",validatepat.validate_file_size('C:\Python\Python36-32\LICENSE.txt'))
 #print (validatepat.validator_allowed_name_dir_characters('/jfkdf'))
-#print (validatepat.validator_size_absolute_path('C:\Python\Python36-32'))
 
 
-
-"""
-f=open("archivo","r")
-it = (row for i,row in enumerate(r) if i>=0)
-for linea in it:
-  print linea
-
-
-def verify_ext(path, exten1)
-os.path.splitText(path)[1]
-if=exten1 == exten2:
-    return True
-else:
-    return false
-"""
-
+name = "C:\Python\Python36-32"
+#print(list(name))
