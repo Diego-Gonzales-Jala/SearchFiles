@@ -37,64 +37,56 @@ class Menu:
             print(dir)
 
     def search_by_date_range(self, date_option):
-        if date_option == 'Y':
+        if date_option == 'Y' or date_option == 'y':
             start_date = input('Enter start date:')
             end_path = input('Enter end date:')
 
+    def search_by_date(self,file_date_option):
+        if file_date_option == 'Y' or file_date_option == 'y':
+            file_create_date = input('Enter the create date of file:')
+            file_update_date = input('Enter the update date of file:')
+
+    def search_by_size_criteria(self,size_option):
+        if size_option == 'Y' or size_option == 'y':
+            file_size = input('Enter the file size:')
+            file_sign = input('Enter the sign value to search: e.g. >, <, = ')
+            file_type_format = input('Enter the format type of file: e.g. KB, MB,GB')
+            if self.validate.is_positive(self.file_size) == True:
+                self.print_to_result(self.search.search_by_size(self.size_file, self.path_file))
+            else:
+                print ("Error: Oops!  That was no valid size criteria.  Try again...")
+
+    def search_by_extension(self,file_ext_option):
+        if file_ext_option == 'Y' or file_ext_option == 'y':
+            file_ext = input('Enter the file extension:')
+        #self.search_option_one
+
+    #Basic search with some criterias to search a file or directory
+    #Basic flag to search is set to 1
     def search_option_one(self):
-        print("Enter followings datas for searching or skipping if something is not necessary")
+        print("Enter following datas for searching or skipping if something is not necessary")
         file_name = input('Enter file name:')
-        file_path = input('Enter the path:')
+        file_path = input('Enter the path: e.g."C:\\python"')
         file_owner = input('Enter the file owner:')
-        file_create_date = input('Enter the create date of file:')
-        file_update_date = input('Enter the update date of file:')
+
+        option_ext = input("Do you want  to search by date range? Y/N")
+        self.search_by_extension(option_ext)
 
         option_range = input("Do you want  to search by date range? Y/N")
         self.search_by_date_range(option_range)
 
-        file_ext = input('Enter the file extension:')
+        option_to_date = input("Do you want  to search by create or update date ? Y/N")
+        self.search_by_date(option_to_date)
 
-        if self.validate.is_positive(self.size_file) == True:
-            print ("--",self.size_file)
-            if self.validate_data.validate_path(self.path_file) == True:
-                self.print_to_result(self.search.search_by_size(self.size_file,self.path_file))
-            else:
-                print ("Error: Oops!  That was no valid path.  Try again...")
-                self.search_option_one()
-        else:
-            print ("Error: Oops!  That was no valid size.  Try again...")
-            self.search_option_one()
-
-
-    def search_option_two(self):
-
-        self.name_file = input('Enter file name:')
-        self.path_file = input('Enter the path:')
         if  self.validate_data.validate_name(self.name_file) == True and self.validate_data.validate_path(self.path_file) == True:
             self.print_to_result(self.search.search_by_name(self.name_file, self.path_file))
         else:
-            print ("Error: Oops!  That was no valid name or path.  Try again...")
-            self.search_option_two()
+            print ("Error: Oops!  That was no valid criteria.  Try again...")
 
-    def search_option_three(self):
-        self.path = (input('Enter the path e.g. "C:\\":'))
-        if self.validate_data.validate_path(self.path) == True:
-            self.print_to_result(self.search.get_all_files(self.path))
-        else:
-            print ("Error: Oops!  That was no valid  path.  Try again...")
-            self.search_option_three()
-
-    def search_option_four(self):
-        self.path = str(input('Enter the path e.g. "C:\\python":'))
-        if self.validate_data.validate_path(self.path) == True:
-            self.print_to_result(self.search.get_all_directories(self.path))
-        else:
-            print ("Error: Oops!  That was no valid  path.  Try again...")
-            self.search_option_four()
-
-
-    def search_option_five(self):
-        print ("In building - search by extension")
+    #Advanced search with some criterias to search a file or directory
+    #Advanced flag to search is set to 1
+    def search_option_two(self):
+         self.search_option_one()
 
     def search_by_option(self, option):
         if self.validate.is_positive(option) == True:
