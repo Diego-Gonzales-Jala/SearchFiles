@@ -100,7 +100,7 @@ class Search:
                 list_result_search.append(dir)
         return list_result_search
 
-    def search_by_range_date(self, start, end, path):
+    def search_by_range_date(self, path):
         # define epoch time
         t0 = dt.datetime.utcfromtimestamp(0)
 

@@ -37,5 +37,5 @@ if __name__ == '__main__':
     print("File name: ", obj_file.get_file_name())
     print("File extension: ", obj_file.get_file_extension())
     print("File size: ", obj_file.get_file_size())
-    print("Is File: ", obj_file.is_file())
+    print("Is Filex: ", obj_file.is_file())
 

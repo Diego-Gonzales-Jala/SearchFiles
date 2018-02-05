@@ -37,4 +37,4 @@ if __name__ == '__main__':
     print("Path: ", obj_dir.get_dir_path())
     print("File name: ", obj_dir.get_dir_name())
     print("File size: ", obj_dir.get_dir_size())
-    print("Is Directory: ", obj_dir.is_directory("D:\_cpc"))
+    print("Is Directoryx: ", obj_dir.is_directory("D:\_cpc"))
