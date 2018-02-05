@@ -44,6 +44,9 @@ class SearchCriteria:
     def get_start_date(self):
         return self.search_criteria['start_date']
 
+    def get_dictionary(self):
+        return self.search_criteria
+
     def set_file_name(self, new_name):
         self.search_criteria['file_name'] = new_name
 
