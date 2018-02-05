@@ -5,11 +5,13 @@ from src.com.jalasoft.search_files.search.directory import Directory
 
 
 class Util_Disk(object):
+
     def get_disk(self, option):
         disk_part = psutil.disk_partitions()
         disk = disk_part[option - 1]
         return disk.device
 
+    #Get disk partition
     def get_disk_partition(self):
         disk_partition = psutil.disk_partitions()
         for i in (0, 0):

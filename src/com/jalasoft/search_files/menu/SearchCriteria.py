@@ -14,6 +14,7 @@ class SearchCriteria:
                                 }
         self.size_criteria = ['=','','MB']
 
+    #Get file name of dictionary
     def get_file_name(self):
         return self.search_criteria['file_name']
 
