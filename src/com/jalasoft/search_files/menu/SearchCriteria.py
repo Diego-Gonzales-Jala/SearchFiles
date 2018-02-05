@@ -18,30 +18,39 @@ class SearchCriteria:
     def get_file_name(self):
         return self.search_criteria['file_name']
 
+    # Get path of dictionary
     def get_path(self):
         return self.search_criteria['path']
 
+    # Get file owner of dictionary
     def get_file_owner(self):
         return self.search_criteria['owner']
 
+    # Get create date of file  - from dictionary
     def get_create_date(self):
         return self.search_criteria['create_date']
 
+    # Get modified date of file  - from dictionary
     def get_modified_date(self):
         return self.search_criteria['modified_date']
 
+    # Get file extension of dictionary
     def get_extension(self):
         return self.search_criteria['ext']
 
+    # Get file kind of dictionary
     def get_file_kind(self):
         return self.search_criteria['kind']
 
+    # Get size criteria of file - from array
     def get_size_criteria(self):
         return self.size_criteria
 
+    # Get end date of file from dictionary
     def get_end_date(self):
         return self.search_criteria['end_date']
 
+    # Get start date file from dictionary
     def get_start_date(self):
         return self.search_criteria['start_date']
 
