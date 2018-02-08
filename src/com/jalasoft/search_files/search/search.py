@@ -5,6 +5,7 @@ from src.com.jalasoft.search_files.menu.SearchCriteria import SearchCriteria
 from src.com.jalasoft.search_files.search.directory import Directory
 from src.com.jalasoft.search_files.search.file import File
 from src.com.jalasoft.search_files.utils.validator import Validator
+from src.com.jalasoft.search_files.utils.logging import logger
 
 
 class Search:
@@ -57,12 +58,15 @@ class Search:
         return list_directories
 
     def get_all_files(self, path):
+        logger.info("get_all_files: Enter")
         #path = self.search_criterial.get_path()
         list_files = []
+        logger.info("get_all_files: Load files")
         for root, directories, files in os.walk(path):
             for file in files:
                 path = os.path.join(root, file)
                 list_files.append(path)
+        logger.info("get_all_files: Exit")
         return list_files
 
     def get_total_search(self, result_of_search):
