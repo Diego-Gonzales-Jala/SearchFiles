@@ -1,13 +1,12 @@
-#util/logging.py
+# util/logging.py
 
 import logging.config
 from definition import CONFIG_PATH
 
 logging.config.fileConfig(CONFIG_PATH)
 
+# create logger
 logger = logging.getLogger('SearchFiles')
 
-
-logger.warning("method_name::enter")
-
-logger.warning("method_name::exit")
+# Set default logger's level
+logger.setLevel(logging.INFO)
