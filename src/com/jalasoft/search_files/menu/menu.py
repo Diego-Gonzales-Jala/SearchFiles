@@ -13,7 +13,7 @@ from src.com.jalasoft.search_files.utils.logging import logger
 class Util_Disk(object):
 
     def get_disk(self, option):
-        logger.info("get disk: Enter")
+        #logger.info("get disk: Enter")
         disk_part = psutil.disk_partitions()
         disk = disk_part[option - 1]
         logger.info("get_disk: Load disk")
@@ -26,7 +26,7 @@ class Util_Disk(object):
         for i in (0, 0):
             partition = disk_partition[i]
             print('{0:2s} {1:3s}'.format(("|"), partition.device))
-        logger.info("get_disk: Load disk")
+        #logger.info("get_disk: Load disk")
 
 class MenuParameter:
 
@@ -66,17 +66,27 @@ class MenuParameter:
             logger.info("parameter_date_range: Load date range in dictionary")
 
     # Enter create or modified date in search_criteria for searching
-    def parameter_date(self):
-        logger.info("parameter_date: Enter")
-        file_date_option = input("Do you want  to search by create or update date ? Y/N: ")
-        if file_date_option == 'Y' or file_date_option == 'y':
-            file_create_date = input('Enter the create date of file: 03/12/2018 (mm-dd-yy): ')
-            file_update_date = input('Enter the update date of file: 03/12/2018 (mm-dd-yy): ')
-            if self.validate_date.validate_format_date(file_create_date) == True:
+    def parameter_create_date(self):
+        logger.info("parameter_create_date: Enter")
+        #file_date_option = input("Do you want  to search by create or update date ? Y/N: ")
+        #if file_date_option == 'Y' or file_date_option == 'y':
+        file_create_date = input('Enter the create date of file: 03/12/2018 (mm-dd-yy): ')
+        if self.validate_date.validate_format_date(file_create_date) == True:
                 self.search_criteria.set_create_date(file_create_date)
-            elif self.validate_date.validate_format_date(file_update_date) == True:
-                self.search_criteria.set_modified_date(file_update_date)
-            logger.info("parameter_date_range: Load create or update date  in dictionary")
+                logger.info("parameter_date_range: Load create date  in dictionary")
+        else:
+            print("Error: Oops!  That was no valid date.  Try again...")
+
+    # Enter access date in search_criteria for searching
+    def parameter_access_date(self):
+        logger.info("parameter_access_date: Enter")
+        file_access_date = input('Enter the update date of file: 03/12/2018 (mm-dd-yy): ')
+        if self.validate_date.validate_format_date(file_access_date) == True:
+           self.search_criteria.set_modified_date(file_access_date)
+           logger.info("parameter_date_range: Load create or update date  in dictionary")
+        else:
+              print("Error: Oops!  That was no valid date.  Try again...")
+              self.parameter_access_date()
 
     # Return sign value for searching by size criteria
     def sign_value_to_size(self):
@@ -201,7 +211,7 @@ class MenuParameter:
         if self.search_criteria.get_file_owner() != '':
                     print("----------------")
                     print("Result: search by file owner:: ")
-                    self.print_to_result(self.search.search_by_owner())
+                    print(self.search.search_by_owner())
                     print("----------------")
         if self.search_criteria.get_extension() != '':
                     print("----------------")
@@ -213,7 +223,7 @@ class MenuParameter:
     # Basic flag to search is set to 1
     def search_option_basic(self):
         print("Enter following datas for searching or skipping if something is not necessary")
-        self.search_criteria.set_search_type(1)
+        #self.search_criteria.set_search_type(1)
         # Call parameter_path to enter path
         file_path = str(input('Enter the path: e.g."C:\\python" : '))
         self.parameter_path(file_path)

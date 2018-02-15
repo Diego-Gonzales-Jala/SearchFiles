@@ -150,7 +150,9 @@ class Search:
 
         return list_result_search
 
-    def search_by_string_inside_file(string, file_path):
+    def search_by_string_inside_file(self):
+        file_path = self.search_criterial.get_path()
+        string = self.search_criterial.get_word_into_file()
         list_of_found = []
         for root, directories, files in os.walk(file_path):
             for file in files:
@@ -178,8 +180,8 @@ class Search:
                 if name == owner_file:
                     list_result_search = (f + " - owner:" + name)
                     # print(list_result_search)
-                else:
-                    list_result_search = (f + " - owner:" + " Unknow")
+                #else:
+                    #list_result_search = (f + " - owner:" + " Unknow")
         return list_result_search
 
     def _range_date_ctime(self,start_date, end_date, path_file):
@@ -189,7 +191,7 @@ class Search:
         boolean = False
         # format date is YYYY/MM/DD
         start = calendar.timegm(datetime.datetime(int(d_start[0]), int(d_start[1]), int(d_start[2]), 0, 0).timetuple())
-        end = calendar.timegm(datetime.datetime(int(d_end[0]), int(d_end[1]), int(d_end[2]), 0, 0).timetuple())
+        end = calendar.timegm(datetime.datetime(int(d_end[0]), int(d_end[1]), int(d_end[2]), 23, 59).timetuple())
 
         (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path_file)
         # ctime = os.path.getatime(path_file)

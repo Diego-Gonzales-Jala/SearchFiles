@@ -10,7 +10,7 @@ class SearchCriteria:
             "end_date":'',
             "start_date": '',
             "ext": '',
-            "kind":''
+            "word_into_file":''
                                 }
         self.size_criteria = ['=','','MB']
 
@@ -39,8 +39,8 @@ class SearchCriteria:
         return self.search_criteria['ext']
 
     # Get file kind of dictionary
-    def get_file_kind(self):
-        return self.search_criteria['kind']
+    def get_word_into_file(self):
+        return self.search_criteria['word_into_file']
 
     # Get size criteria of file - from array
     def get_size_criteria(self):
@@ -75,8 +75,8 @@ class SearchCriteria:
     def set_extension(self, extension):
         self.search_criteria['ext'] = extension
 
-    def set_file_kind(self,update_kind):
-        self.search_criteria['kind'] = update_kind
+    def set_word_into_file(self,word_into_file_t):
+        self.search_criteria['word_into_file'] = word_into_file_t
 
     def set_size_criteria(self,sign_value,size,format_type):
         self.size_criteria[1] = sign_value
