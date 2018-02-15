@@ -79,9 +79,9 @@ class SearchCriteria:
         self.search_criteria['word_into_file'] = word_into_file_t
 
     def set_size_criteria(self,sign_value,size,format_type):
-        self.size_criteria[1] = sign_value
-        self.size_criteria[2] = size
-        self.size_criteria[3] = format_type
+        self.size_criteria[0] = sign_value
+        self.size_criteria[1] = size
+        self.size_criteria[2] = format_type
 
     def set_end_date(self,end_date_usr):
         self.search_criteria['end_date'] = end_date_usr
