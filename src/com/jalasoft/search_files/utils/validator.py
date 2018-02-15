@@ -1,5 +1,7 @@
 import os
 import re
+from src.com.jalasoft.search_files.utils.logging import logger
+
 
 class Validator:
 # Constructor where initial parameters include name_path==directory+path and the other is name_file
@@ -23,13 +25,17 @@ class Validator:
 
     # this method track  each character from path.
 
+
     def validate_path(self, path):
+        logger.info("validate_path: Enter")
         result = True
         for i in self.no_valid_char_path:
+            logger.info("validate_path: compare invalid char in path")
             for j in path:
                 if i == j:
                     result = False
                     break
+        logger.info("validate_path: Exit")
         return result
 
     # This meto\hod malidate if the name of path is right along it.
@@ -50,10 +56,11 @@ class Validator:
 
     def is_number(self, number):
         result = False
-        if type(number) != str:
-            if number >= 0:
-                result = True
-
+        try:
+            num = int(number)
+            result = True
+        except:
+            result = False
         return result
 
 # This method determine the integer value must be a positive value, not negative.
