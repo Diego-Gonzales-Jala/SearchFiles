@@ -1,4 +1,5 @@
 class SearchCriteria:
+
     def __init__(self):
         self.search_criteria = {
             "search_type": '',

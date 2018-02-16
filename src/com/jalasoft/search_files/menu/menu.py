@@ -30,7 +30,7 @@ class Util_Disk(object):
 
 class MenuParameter:
 
-    # Builter method of menu
+    # Builter method of menu parameter
     def __init__(self):
         self.name_file = ''
         self.format_type = ['KB', 'MB', 'GB', 'kb', 'mb', 'gb']
