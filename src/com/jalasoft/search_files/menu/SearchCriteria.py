@@ -1,20 +1,19 @@
 class SearchCriteria:
-
     def __init__(self):
         self.search_criteria = {
+            "search_type": '',
             "file_name": '',
-            "path": 'C:',
+            "path": '',
             "owner": '',
-            "create_date": '',
-            "modified_date":'',
-            "end_date":'',
-            "start_date": '',
-            "ext": '',
-            "word_into_file":''
-                                }
-        self.size_criteria = ['=','','MB']
+            "create_date": {"c_start_date": '', "c_end_date": ''},
+            "modified_date": {"m_start_date": '', "m_end_date": ''},
+            "access_date": {"a_start_date": '', "a_end_date": ''},
+            "file_extension": '',
+            "word_into_file": ''}
 
-    #Get file name of dictionary
+        self.size_criteria = ['=', '', 'MB']
+
+    # Get file name of dictionary
     def get_file_name(self):
         return self.search_criteria['file_name']
 
@@ -27,16 +26,42 @@ class SearchCriteria:
         return self.search_criteria['owner']
 
     # Get create date of file  - from dictionary
+    def get_create_date_start(self):
+        return self.search_criteria['create_date']['c_start_date']
+
+    # Get create date of file  - from dictionary
+    def get_create_date_end(self):
+        return self.search_criteria['create_date']['c_end_date']
+
+    # Get modified date of file  - from dictionary
+    def get_modified_date_start(self):
+        return self.search_criteria['modified_date']['m_start_date']
+
+    # Get modified date of file  - from dictionary
+    def get_modified_date_end(self):
+        return self.search_criteria['modified_date']['m_end_date']
+
+    # Get access date of file  - from dictionary
+    def get_access_date_start(self):
+        return self.search_criteria['access_date']['a_start_date']
+
+    # Get access date of file  - from dictionary
+    def get_access_date_end(self):
+        return self.search_criteria['access_date']['a_end_date']
+
+    # Get modified date of file  - from dictionary
     def get_create_date(self):
         return self.search_criteria['create_date']
 
-    # Get modified date of file  - from dictionary
     def get_modified_date(self):
         return self.search_criteria['modified_date']
 
+    def get_access_date(self):
+        return self.search_criteria['access_date']
+
     # Get file extension of dictionary
     def get_extension(self):
-        return self.search_criteria['ext']
+        return self.search_criteria['file_extension']
 
     # Get file kind of dictionary
     def get_word_into_file(self):
@@ -54,40 +79,58 @@ class SearchCriteria:
     def get_start_date(self):
         return self.search_criteria['start_date']
 
+    # Get search type to search from dictionary
+    def get_search_type(self):
+        return self.search_criteria['search_type']
+
+    # Get all data from dictionary
     def get_dictionary(self):
         return self.search_criteria
 
+    # Set file name into dictionary
     def set_file_name(self, new_name):
         self.search_criteria['file_name'] = new_name
 
-    def set_path(self,new_path):
+    # Set file path into dictionary
+    def set_path(self, new_path):
         self.search_criteria['path'] = new_path
 
-    def set_file_owner(self,new_owner):
+    # Set file owner into dictionary
+    def set_file_owner(self, new_owner):
         self.search_criteria['owner'] = new_owner
 
-    def set_create_date(self,update_date):
-        self.search_criteria['create_date'] = update_date
+    # Set create date of file into dictionary
+    def set_create_date(self, start_date, end_date):
+        self.search_criteria['create_date']['c_start_date'] = start_date
+        self.search_criteria['create_date']['c_end_date'] = end_date
 
-    def set_modified_date(self,update_mod_date):
-        self.search_criteria['modified_date'] = update_mod_date
+    # Set modified date of file into dictionary
+    def set_modified_date(self, start_date, end_date):
+        self.search_criteria['modified_date']['m_start_date'] = start_date
+        self.search_criteria['modified_date']['m_end_date'] = end_date
 
+    # Set create date of file into dictionary
+    def set_access_date(self, start_date, end_date):
+        self.search_criteria['modified_date']['a_start_date'] = start_date
+        self.search_criteria['modified_date']['a_end_date'] = end_date
+
+    # Set file extension into dictionary
     def set_extension(self, extension):
-        self.search_criteria['ext'] = extension
+        self.search_criteria['file_extension'] = extension
 
-    def set_word_into_file(self,word_into_file_t):
+    # Set word to search in the files into dictionary
+    def set_word_into_file(self, word_into_file_t):
         self.search_criteria['word_into_file'] = word_into_file_t
 
-    def set_size_criteria(self,sign_value,size,format_type):
+    # Set size criteria of file into dictionary
+    def set_size_criteria(self, sign_value, size, format_type):
         self.size_criteria[0] = sign_value
         self.size_criteria[1] = size
         self.size_criteria[2] = format_type
 
-    def set_end_date(self,end_date_usr):
-        self.search_criteria['end_date'] = end_date_usr
-
-    def set_start_date(self,start_date_usr):
-        self.search_criteria['start_date'] = start_date_usr
+    # Get search type to search from dictionary
+    def set_search_type(self, search_type_usr):
+        self.search_criteria['search_type'] = search_type_usr
 
 
 class BasicSearch(SearchCriteria):

@@ -1,6 +1,7 @@
 from menu import MenuParameter
 from menu import Util_Disk
 from src.com.jalasoft.search_files.utils.ValidatorNumber import ValidatorNumber
+from src.com.jalasoft.search_files.utils.logging import logger
 
 class MainMenu():
     validate_number = ValidatorNumber()
