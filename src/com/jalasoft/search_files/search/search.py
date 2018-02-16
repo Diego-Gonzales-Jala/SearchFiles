@@ -1,6 +1,10 @@
 import os
 import datetime as dt
-
+import calendar
+import datetime
+import win32api
+import win32con
+import win32security
 from src.com.jalasoft.search_files.menu.SearchCriteria import SearchCriteria
 from src.com.jalasoft.search_files.search.directory import Directory
 from src.com.jalasoft.search_files.search.file import File
@@ -137,49 +141,78 @@ class Search:
             elif sign_value == '=':
                 if file_size < file_size_convert:
                     list_result_search.append(dir)
+            elif sign_value == '<=':
+                if file_size <= file_size_convert:
+                    list_result_search.append(dir)
+            elif sign_value == '>=':
+                if file_size >= file_size_convert:
+                    list_result_search.append(dir)
 
         return list_result_search
 
-    def search_by_range_date(self):
+    def search_by_string_inside_file(self):
+        file_path = self.search_criterial.get_path()
+        string = self.search_criterial.get_word_into_file()
+        list_of_found = []
+        for root, directories, files in os.walk(file_path):
+            for file in files:
+                dir_file = os.path.join(root, file)
+                file_open = open(dir_file, 'r')
+                for line in file_open.readlines():
+                    for text in string:
+                        if text in line:
+                            list_of_found.append(dir_file)
+
+        return set(list_of_found)
+
+    def search_by_owner(self):
         path = self.search_criterial.get_path()
-        start_date = self.search_criterial.get_start_date()
-        start_date_split = start_date.split('/')
-        print (start_date)
-        print (start_date_split)
-        end_date = self.search_criterial.get_start_date()
-        end_date_split = end_date.split('/')
-
-        # define epoch time
-        t0 = dt.datetime.utcfromtimestamp(0)
-
-        # define time ranges
-        #d1 = (dt.datetime(int(start_date_split[2]), int(start_date_split[0]), int(start_date_split[1])) - t0).total_seconds()
-        #d2 = (dt.datetime(int(start_date_split[2]), int(start_date_split[0]), int(start_date_split[1])) - t0).total_seconds()
-        d1 = (dt.datetime(2018, 2, 1) - t0).total_seconds()
-        d2 = (dt.datetime(2018, 2, 28) - t0).total_seconds()
-
-        #print(d1)
-        #print(d2)
-
+        owner_file = self.search_criterial.get_file_owner()
+        list_result_search = []
         for (dirpath, dirnames, filenames) in os.walk(path):
             for filename in filenames:
-                #f = '/'.join([dirpath, filename])
                 f = os.path.join(dirpath, filename)
-                #ctime = os.stat(f)[-1]
-                ctime= os.stat(f).st_ctime
-                ###ctime = os.path.getctime(f)
-                mtime = os.path.getmtime(f)
-                atime = os.path.getatime(f)
-                #print("-----------------------------------", ctime)
-                #print("f--", f)
-                #print("c--",ctime)
-                #print("m--",mtime)
-                #print("a--",atime)
-                #print("-----------------------------------", ctime)
-                #print(ctime)
-                if d1 >= ctime and ctime <= d2:
-                    print(ctime)
-                    print(f)
+                open(filename, "w").close()
+                dataow = win32api.GetUserNameEx(win32con.NameSamCompatible)
+                sd = win32security.GetFileSecurity(filename, win32security.OWNER_SECURITY_INFORMATION)
+                owner_sid = sd.GetSecurityDescriptorOwner()
+                name, domain, type = win32security.LookupAccountSid(None, owner_sid)
+                if name == owner_file:
+                    list_result_search = (f + " - owner:" + name)
+                    # print(list_result_search)
+                #else:
+                    #list_result_search = (f + " - owner:" + " Unknow")
+        return list_result_search
+
+    def _range_date_ctime(self,start_date, end_date, path_file):
+        print("rrr2", path_file)
+        d_start = start_date.split("/")
+        d_end = end_date.split("/")
+        boolean = False
+        # format date is YYYY/MM/DD
+        start = calendar.timegm(datetime.datetime(int(d_start[0]), int(d_start[1]), int(d_start[2]), 0, 0).timetuple())
+        end = calendar.timegm(datetime.datetime(int(d_end[0]), int(d_end[1]), int(d_end[2]), 23, 59).timetuple())
+
+        (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path_file)
+        # ctime = os.path.getatime(path_file)
+        print(start, end, ctime)
+        if start <= ctime and ctime <= end:
+            boolean = True
+        # return (start <= ctime <= end)
+        return boolean
+
+    def search_by_range_date(self):
+        file_path = self.search_criterial.get_path()
+        start_date = self.search_criterial.get_start_date()
+        end_date = self.search_criterial.get_start_date()
+        list_of_found = []
+        for root, directories, files in os.walk(file_path):
+            for file in files:
+                file_dir = os.path.join(root, file)
+                if self._range_date_ctime(start_date, end_date, file_dir):
+                    list_of_found.append(file_dir)
+
+        return list_of_found
 
 
 """
