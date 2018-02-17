@@ -56,19 +56,19 @@ class MenuParameter:
         print("Do you want  to search file by create date?,  enter 1")
         print("Do you want  to search file by modified date?, enter 2")
         print("Do you want  to search file by access date?, enter 3")
-        option_date = input("Enter the option: ")
-        if self.validate_number.is_number(option_date):
-            if option_date == 1:
+        option_type_d = int(input('Enter option:'))
+        if self.validate_number.is_number(option_type_d) == True:
+            if option_type_d == 1:
                 start_date_c = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
                 end_date_c = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
                 if start_date_c != '' and end_date_c != '':
                     self._parameter_create_date_by_date_range_(start_date_c,end_date_c)
-            elif option_date == 2:
+            elif option_type_d == 2:
                 start_date_m = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
                 end_date_m = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
                 if start_date_m != '' and end_date_m != '':
                     self._parameter_modified_date_by_date_range_(start_date_m,end_date_m)
-            elif option_date == 3:
+            elif option_type_d == 3:
                 start_date_a = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
                 end_date_a = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
                 if start_date_a != '' and end_date_a != '':
@@ -177,7 +177,7 @@ class MenuParameter:
             else:
                 print("Error: Oops!  That was no valid criteria.  Try again...")
         else:
-            self.search_criteria.set_path("C:\Python")
+            self.search_criteria.set_path("C:\\test")
 
 
     # Enter file name in search_criteria for searching
@@ -207,8 +207,9 @@ class MenuParameter:
 
         if self.search_criteria.get_file_name() != '':
                     print("----------------")
-                    print("Result: search by file name:: ")
+                    print("Result: search by  name:: ")
                     self.print_to_result(self.search.search_by_file_name())
+                    self.print_to_result(self.search.search_by_name())
                     print("----------------")
         if self.search_criteria.get_file_owner() != '':
                     print("----------------")
@@ -276,25 +277,25 @@ class MenuParameter:
 
             print("Starting to search... ")
             # Search files by create date
-            if self.search_criteria.get_create_date() != '':
+            if self.search_criteria.get_create_date_start() != '':
                 print("----------------")
                 print("Result: search file by create date ::  ")
-                self.print_to_result(self.search.search_by_range_date())
+                self.print_to_result(self.search.search_by_date_range_ctime())
 
             # Search files by access date
-            if self.search_criteria.get_modified_date() != '':
+            if self.search_criteria.get_modified_date_start() != '':
                 print("----------------")
-                print("Result: search file by create date ::  Building..... ")
-                #self.print_to_result(self.search.search_by_range_date())
+                print("Result: search file by modified date ::  ")
+                self.print_to_result(self.search.search_by_date_range_mtime())
 
             # Search files by create date
-            if self.search_criteria.get_access_date() != '':
+            if self.search_criteria.get_access_date_start() != '':
                 print("----------------")
-                print("Result: search file by create date :: Building..... ")
-                #self.print_to_result(self.search.search_by_range_date())
+                print("Result: search file by access date ::  ")
+                self.print_to_result(self.search.search_by_date_range_atime())
 
             # Search files by create date
-            if self.search_criteria.get_size_criteria() != '':
+            if self.search_criteria.get_size_criteria()[0] != '':
                 print("----------------")
                 print("Result: search file by size ::  ")
                 self.print_to_result(self.search.search_by_file_size())
@@ -302,7 +303,9 @@ class MenuParameter:
             if self.search_criteria.get_word_into_file() != '':
                 print("----------------")
                 print("Result: search by content into file ::  ")
-                self.print_to_result(self.search.search_by_string_inside_file())
+                #self.print_to_result(self.search.search_by_string_inside_file())
+                self.search.search_by_string_inside_file()
+
         except:
             print("Unexpected error:", sys.exc_info()[0])
             #raise

@@ -87,7 +87,7 @@ class Search:
         list_dir = self.get_all_directories(path)
         for dir in list_dir:
             namedir = os.path.basename(dir)
-            if namedir == name_dir:
+            if name_dir in namedir:
                 list_result_search.append(dir)
         return list_result_search
 
@@ -100,7 +100,7 @@ class Search:
             list_dir = self.get_all_files(path)
             for dir in list_dir:
                 file_name = os.path.basename(dir)
-                if file_name == name_file:
+                if name_file in file_name:
                     list_result_search.append(dir)
             return list_result_search
         else:
@@ -153,17 +153,17 @@ class Search:
     def search_by_string_inside_file(self):
         file_path = self.search_criterial.get_path()
         string = self.search_criterial.get_word_into_file()
-        list_of_found = []
+        #list_of_found=[]
         for root, directories, files in os.walk(file_path):
             for file in files:
                 dir_file = os.path.join(root, file)
                 file_open = open(dir_file, 'r')
                 for line in file_open.readlines():
-                    for text in string:
-                        if text in line:
-                            list_of_found.append(dir_file)
-
-        return set(list_of_found)
+                    #for text in string:
+                        if string in line:
+                            #list_of_found.append(dir_file)
+                            print (dir_file)
+        #return set(list_of_found)
 
     def search_by_owner(self):
         path = self.search_criterial.get_path()
@@ -185,7 +185,6 @@ class Search:
         return list_result_search
 
     def _range_date_ctime(self,start_date, end_date, path_file):
-        print("rrr2", path_file)
         d_start = start_date.split("/")
         d_end = end_date.split("/")
         boolean = False
@@ -195,16 +194,15 @@ class Search:
 
         (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path_file)
         # ctime = os.path.getatime(path_file)
-        print(start, end, ctime)
         if start <= ctime and ctime <= end:
             boolean = True
         # return (start <= ctime <= end)
         return boolean
 
-    def search_by_range_date(self):
+    def search_by_date_range_ctime(self):
         file_path = self.search_criterial.get_path()
-        start_date = self.search_criterial.get_start_date()
-        end_date = self.search_criterial.get_start_date()
+        start_date = self.search_criterial.get_create_date_start()
+        end_date = self.search_criterial.get_create_date_end()
         list_of_found = []
         for root, directories, files in os.walk(file_path):
             for file in files:
@@ -214,36 +212,58 @@ class Search:
 
         return list_of_found
 
+    def _range_date_atime(self,start_date, end_date, path_file):
+        d_start = start_date.split("/")
+        d_end = end_date.split("/")
+        boolean = False
+        # format date is YYYY/MM/DD
+        start = calendar.timegm(datetime.datetime(int(d_start[0]), int(d_start[1]), int(d_start[2]), 0, 0).timetuple())
+        end = calendar.timegm(datetime.datetime(int(d_end[0]), int(d_end[1]), int(d_end[2]), 23, 59).timetuple())
 
-"""
-if __name__ == '__main__':
+        (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path_file)
+        # ctime = os.path.getatime(path_file)
+        if start <= atime and atime <= end:
+            boolean = True
+        # return (start <= ctime <= end)
+        return boolean
 
-    criterial_basic = {
-            "file_name": 'IntelGFX.txt',
-            "path": 'C:\Intel\Logs',
-            "owner": 'dgs',
-            "create_date": '15/05/2017',
-            "modified_date":'15/05/2017',
-            "end_date":'18/05/2017',
-            "start_date": '20/05/2017',
-            "ext": '.txt',
-            "kind":'basic'}
+    def search_by_date_range_atime(self):
+        file_path = self.search_criterial.get_path()
+        start_date = self.search_criterial.get_access_date_start()
+        end_date = self.search_criterial.get_access_date_end()
+        list_of_found = []
+        for root, directories, files in os.walk(file_path):
+            for file in files:
+                file_dir = os.path.join(root, file)
+                if self._range_date_atime(start_date, end_date, file_dir):
+                    list_of_found.append(file_dir)
 
-    path_with_file = "C:\Intel\Logs\IntelGFX.txt"
-    path_directory = "C:\Intel\Logs"
+        return list_of_found
 
-    obj_search = Search(criterial_basic)
-    obj_search.get_detail_search_criterial()
+    def _range_date_mtime(self,start_date, end_date, path_file):
+        d_start = start_date.split("/")
+        d_end = end_date.split("/")
+        boolean = False
+        # format date is YYYY/MM/DD
+        start = calendar.timegm(datetime.datetime(int(d_start[0]), int(d_start[1]), int(d_start[2]), 0, 0).timetuple())
+        end = calendar.timegm(datetime.datetime(int(d_end[0]), int(d_end[1]), int(d_end[2]), 23, 59).timetuple())
 
-    obj_search.printer_directories(obj_search.get_all_files(path_directory))
-    obj_search.printer_directories(obj_search.get_all_directories("C:\\Intel"))
-    print(obj_search.is_directory(path_directory))
-    print(obj_search.is_file(path_with_file))
-    obj_search.printer_directories(obj_search.search_by_file_name("webdav.txt", "C:\\xampp"))
-    obj_search.printer_directories(obj_search.search_by_name("webdav", "C:\\xampp"))
-    obj_search.printer_directories(obj_search.search_by_extension(".txt", "C:\\xampp"))
-    obj_search.printer_directories(obj_search.search_by_file_size(222, "C:\\xampp"))
-"""
-if __name__ == '__main__':
-    search = Search()
-    print(search.search_by_range_date())
+        (mode, ino, dev, nlink, uid, gid, size, atime, mtime, ctime) = os.stat(path_file)
+        # ctime = os.path.getatime(path_file)
+        if start <= mtime and mtime <= end:
+            boolean = True
+        # return (start <= ctime <= end)
+        return boolean
+
+    def search_by_date_range_mtime(self):
+        file_path = self.search_criterial.get_path()
+        start_date = self.search_criterial.get_modified_date_start()
+        end_date = self.search_criterial.get_modified_date_end()
+        list_of_found = []
+        for root, directories, files in os.walk(file_path):
+            for file in files:
+                file_dir = os.path.join(root, file)
+                if self._range_date_mtime(start_date, end_date, file_dir):
+                    list_of_found.append(file_dir)
+
+        return list_of_found
