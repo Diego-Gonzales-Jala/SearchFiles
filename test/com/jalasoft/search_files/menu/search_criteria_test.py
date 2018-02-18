@@ -14,7 +14,7 @@ class SearchCriteriaTest(unittest.TestCase):
     def test_is_instance_of_menu_parameter(self):
         self.assertIsInstance(self.menu_parameter,MenuParameter)
 
-    def test_set_file_name(self):
+    def test_set_file_name_into_dictionary(self):
         self.assertEqual(self.menu_parameter.parameter_name('map.sdf'),self.search_criteria_t.get_file_name())
 
     def test_get_size_criteria(self):
