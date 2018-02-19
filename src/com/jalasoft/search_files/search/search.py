@@ -5,18 +5,20 @@ import datetime
 import win32api
 import win32con
 import win32security
-from src.com.jalasoft.search_files.menu.SearchCriteria import SearchCriteria
+from src.com.jalasoft.search_files.menu.searchcriteria import SearchCriteria
 from src.com.jalasoft.search_files.search.directory import Directory
 from src.com.jalasoft.search_files.search.file import File
-from src.com.jalasoft.search_files.utils.validator import Validator
-from src.com.jalasoft.search_files.utils.logging import logger
+from src.com.jalasoft.search_files.utils.validatorPath import ValidatorPath
+from src.com.jalasoft.search_files.utils.validatorFileSizeConversor import ValidatorFileSizeConversor
+from src.com.jalasoft.search_files.utils.logging_search import logger
 
 
 class Search:
 
     def __init__(self):
         self.search_criterial = SearchCriteria()
-        self.validator = Validator()
+        self.validate_path_s = ValidatorPath()
+        self.validate_size_s = ValidatorFileSizeConversor()
         self.path = ""
 
     def set_path(self, new_path):
@@ -95,7 +97,7 @@ class Search:
         name_file = self.search_criterial.get_file_name()
         path = self.search_criterial.get_path()
 
-        if self.validator.validate_path(path):
+        if self.validate_path_s.validate_path(path):
             list_result_search = []
             list_dir = self.get_all_files(path)
             for dir in list_dir:
@@ -123,7 +125,7 @@ class Search:
         type = size[2]
         # Search a file greater than or less than to size
         #print(type)
-        file_size_convert = int(self.validator.convert_to_base(int(size[1]),type))
+        file_size_convert = int(self.validate_size_s.convert_to_base(int(size[1]),type))
         #convert_base = self.validator.convert_to(int(size[1]), type)
         #print(convert_base, type)
 
@@ -151,9 +153,9 @@ class Search:
         return list_result_search
 
     def search_by_string_inside_file(self):
+        list_of_string = []
         file_path = self.search_criterial.get_path()
         string = self.search_criterial.get_word_into_file()
-        #list_of_found=[]
         for root, directories, files in os.walk(file_path):
             for file in files:
                 dir_file = os.path.join(root, file)
@@ -161,14 +163,14 @@ class Search:
                 for line in file_open.readlines():
                     #for text in string:
                         if string in line:
-                            #list_of_found.append(dir_file)
+                            #list_of_string.append(dir_file)
                             print (dir_file)
-        #return set(list_of_found)
+        #return set(list_of_string)
 
     def search_by_owner(self):
         path = self.search_criterial.get_path()
         owner_file = self.search_criterial.get_file_owner()
-        list_result_search = []
+        list_result_owner = []
         for (dirpath, dirnames, filenames) in os.walk(path):
             for filename in filenames:
                 f = os.path.join(dirpath, filename)
@@ -178,11 +180,9 @@ class Search:
                 owner_sid = sd.GetSecurityDescriptorOwner()
                 name, domain, type = win32security.LookupAccountSid(None, owner_sid)
                 if name == owner_file:
-                    list_result_search = (f + " - owner:" + name)
-                    # print(list_result_search)
-                #else:
-                    #list_result_search = (f + " - owner:" + " Unknow")
-        return list_result_search
+                    list_result_owner.append(f)
+                    #list_result_search = (f + " - owner:" + name)
+        return list_result_owner
 
     def _range_date_ctime(self,start_date, end_date, path_file):
         d_start = start_date.split("/")

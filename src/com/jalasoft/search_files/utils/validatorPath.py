@@ -1,5 +1,5 @@
 import os
-from src.com.jalasoft.search_files.utils.logging import logger
+from src.com.jalasoft.search_files.utils.logging_search import logger
 
 class ValidatorPath:
 
@@ -18,7 +18,7 @@ class ValidatorPath:
         logger.info("validator_exist_path: Enter")
         result = False
         if len(absolute_path) >= 0:
-            #logger.info("validator_exist_path: compare right path in os")
+            logger.info("validator_exist_path: compare right path in os")
             if os.path.exists(absolute_path):
                 result = True
         logger.info("validator_exist_path: Exit")
@@ -67,7 +67,7 @@ class ValidatorPath:
             return False
 
     def validate_file_name(self, file_name):
-        #logger.info("validate_file_name: Enter")
+        logger.info("validate_file_name: Enter")
         while chr(file_name) == "C" | "c" | "d" | "D" | "e" | "E" | "f" | "F":
             logger.info("validate_file_name: validate directory name implicid with file name")
             return True

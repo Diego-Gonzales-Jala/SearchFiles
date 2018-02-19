@@ -1,14 +1,18 @@
 import psutil
 import sys
-from src.com.jalasoft.search_files.menu.SearchCriteria import SearchCriteria
+import os
+import win32api
+import win32con
+import win32security
+from src.com.jalasoft.search_files.menu.searchcriteria import SearchCriteria
 #from FilterMenu import FilterMenu
 #from src.com.jalasoft.search_files.utils.validator import Validator
 from src.com.jalasoft.search_files.utils.validatorDate import ValidatorDate
 from src.com.jalasoft.search_files.utils.validatorFileSizeConversor import ValidatorFileSizeConversor
-from src.com.jalasoft.search_files.utils.ValidatorNumber import ValidatorNumber
+from src.com.jalasoft.search_files.utils.validatorNumber import ValidatorNumber
 from src.com.jalasoft.search_files.utils.validatorPath import ValidatorPath
 from src.com.jalasoft.search_files.search.search import Search
-from src.com.jalasoft.search_files.utils.logging import logger
+from src.com.jalasoft.search_files.utils.logging_search import logger
 
 class Util_Disk(object):
 
@@ -53,35 +57,37 @@ class MenuParameter:
             print(dir)
 
     def option_parameter_by_date(self):
-        print("Do you want  to search file by create date?,  enter 1")
-        print("Do you want  to search file by modified date?, enter 2")
-        print("Do you want  to search file by access date?, enter 3")
-        option_type_d = int(input('Enter option:'))
-        if self.validate_number.is_number(option_type_d) == True:
-            if option_type_d == 1:
-                start_date_c = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
-                end_date_c = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
-                if start_date_c != '' and end_date_c != '':
-                    self._parameter_create_date_by_date_range_(start_date_c,end_date_c)
-            elif option_type_d == 2:
-                start_date_m = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
-                end_date_m = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
-                if start_date_m != '' and end_date_m != '':
-                    self._parameter_modified_date_by_date_range_(start_date_m,end_date_m)
-            elif option_type_d == 3:
-                start_date_a = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
-                end_date_a = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
-                if start_date_a != '' and end_date_a != '':
-                    self._parameter_access_date_by_date_range_(start_date_a,end_date_a)
-            else:
-                print("Error: Oops!  That was no valid option.  Try again...")
+        size_option = input("Do you want  to search by date? Y/N: ")
+        if size_option == 'Y' or size_option == 'y':
+            print("Do you want  to search file by create date?,  enter 1")
+            print("Do you want  to search file by modified date?, enter 2")
+            print("Do you want  to search file by access date?, enter 3")
+            option_type_d = int(input('Enter option:'))
+            if self.validate_number.is_number(option_type_d) == True:
+                if option_type_d == 1:
+                    start_date_c = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
+                    end_date_c = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
+                    if start_date_c != '' and end_date_c != '':
+                        self.parameter_create_date_by_date_range_(start_date_c,end_date_c)
+                elif option_type_d == 2:
+                    start_date_m = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
+                    end_date_m = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
+                    if start_date_m != '' and end_date_m != '':
+                        self.parameter_modified_date_by_date_range_(start_date_m,end_date_m)
+                elif option_type_d == 3:
+                    start_date_a = input('Enter start date: e.g. 2018/02/15 (yyyy-mm-dd): ')
+                    end_date_a = input('Enter end date: e.g. 2018/02/15 (yyyy-mm-dd): ')
+                    if start_date_a != '' and end_date_a != '':
+                        self.parameter_access_date_by_date_range_(start_date_a,end_date_a)
+                else:
+                    print("Error: Oops!  That was no valid option.  Try again...")
 
     def parameter_file_content(self,string):
         if string != '':
             self.search_criteria.set_word_into_file(string)
 
     # Enter create date by date range in search_criteria for searching
-    def _parameter_create_date_by_date_range_(self,start_date,end_date):
+    def parameter_create_date_by_date_range_(self,start_date,end_date):
         logger.info("parameter_create_date_by_date_range: Enter")
         if self.validate_date.validate_format_date(start_date) == True and self.validate_date.validate_format_date(end_date) == True:
             self.search_criteria.set_create_date(start_date,end_date)
@@ -90,7 +96,7 @@ class MenuParameter:
             print("Error: Oops!  That was no valid date.  Try again...")
 
     # Enter create date by date range in search_criteria for searching
-    def _parameter_modified_date_by_date_range_(self, start_date, end_date):
+    def parameter_modified_date_by_date_range_(self, start_date, end_date):
         logger.info("parameter_modified_date_by_date_range: Enter")
         if self.validate_date.validate_format_date(start_date) == True and self.validate_date.validate_format_date(end_date) == True:
             self.search_criteria.set_modified_date(start_date, end_date)
@@ -99,7 +105,7 @@ class MenuParameter:
                 print("Error: Oops!  That was no valid date.  Try again...")
 
     # Enter create date by date range in search_criteria for searching
-    def _parameter_access_date_by_date_range_(self, start_date, end_date):
+    def parameter_access_date_by_date_range_(self, start_date, end_date):
         logger.info("parameter_access_date_by_date_range: Enter")
         if self.validate_date.validate_format_date(start_date) == True and self.validate_date.validate_format_date(end_date) == True:
                 self.search_criteria.set_access_date(start_date, end_date)
@@ -198,6 +204,7 @@ class MenuParameter:
             else:
                 print("Error: Oops!  That was no valid name.  Try again...")
 
+    # Filter some parameters in base file name, file extension, file owner with path
     def filter_basic_search(self):
         if self.search_criteria.get_path() != '' and self.search_criteria.get_file_name() == '' and self.search_criteria.get_file_owner() == '' and self.search_criteria.get_extension() == '':
             print("----------------")
@@ -205,22 +212,53 @@ class MenuParameter:
             self.print_to_result(self.search.get_all_files(self.search_criteria.get_path()))
             print("----------------")
 
-        if self.search_criteria.get_file_name() != '':
+        if  self.search_criteria.get_path() != '' and self.search_criteria.get_file_name() != '':
+                if self.search_criteria.get_file_owner() == '' and self.search_criteria.get_extension() == '':
                     print("----------------")
                     print("Result: search by  name:: ")
                     self.print_to_result(self.search.search_by_file_name())
                     self.print_to_result(self.search.search_by_name())
                     print("----------------")
-        if self.search_criteria.get_file_owner() != '':
+        if self.search_criteria.get_path() != '' and self.search_criteria.get_file_owner() != '':
+            if self.search_criteria.get_file_name() == '' and self.search_criteria.get_extension() == '':
                     print("----------------")
                     print("Result: search by file owner:: ")
-                    print(self.search.search_by_owner())
+                    self.print_to_result(self.search.search_by_owner())
                     print("----------------")
-        if self.search_criteria.get_extension() != '':
+        if self.search_criteria.get_path() != '' and self.search_criteria.get_extension() != '':
+            if self.search_criteria.get_file_name() == '' and self.search_criteria.get_file_owner() == '':
                     print("----------------")
                     print("Result: search by file extension:: ")
                     self.print_to_result(self.search.search_by_extension())
                     print("----------------")
+
+        if self.search_criteria.get_path() != '' and self.search_criteria.get_file_name() != '' and self.search_criteria.get_extension() != '':
+                if self.search_criteria.get_file_owner() == '':
+                    print("Result: search by  name and extension:: ")
+                    name = str(self.search_criteria.get_file_name()) + str(self.search_criteria.get_extension())
+                    self.search_criteria.set_file_name(name)
+                    self.print_to_result(self.search.search_by_file_name())
+
+        if self.search_criteria.get_path() != '' and self.search_criteria.get_file_name() != '':
+            if self.search_criteria.get_extension() != '' and self.search_criteria.get_file_owner() != '':
+                list_result_final = []
+                name = str(self.search_criteria.get_file_name()) + str(self.search_criteria.get_extension())
+                self.search_criteria.set_file_name(name)
+                path = self.search_criteria.get_path()
+                owner_file = self.search_criteria.get_file_owner()
+                name_file = self.search_criteria.get_file_name()
+                for (dirpath, dirnames, filenames) in os.walk(path):
+                    for filename in filenames:
+                        if name_file in filename:
+                            f = os.path.join(dirpath, filename)
+                            open(filename, "w").close()
+                            dataow = win32api.GetUserNameEx(win32con.NameSamCompatible)
+                            sd = win32security.GetFileSecurity(filename, win32security.OWNER_SECURITY_INFORMATION)
+                            owner_sid = sd.GetSecurityDescriptorOwner()
+                            name, domain, type = win32security.LookupAccountSid(None, owner_sid)
+                            if name == owner_file:
+                                list_result_final.append(f)
+                                print(f," owner: ",name)
 
     # Basic search with some criterias to search a file or directory
     # Basic flag to search is set to 1
@@ -243,14 +281,13 @@ class MenuParameter:
         file_ext = input('Enter the file extension: e.g .txt :')
         self.parameter_extension(file_ext)
 
-        #print(self.search_criteria.get_dictionary())
         try:
             print("Starting to search... ")
             self.filter_basic_search()
 
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
-            #raise
+        except Exception:
+            logger.error("Unexpected errors", sys.exc_info()[0])
+            print("Unexpected error:", "search_option_basic")
 
     # Advanced search with some criteria to search a file or directory
     # Advanced flag to search is set to 1
@@ -306,9 +343,9 @@ class MenuParameter:
                 #self.print_to_result(self.search.search_by_string_inside_file())
                 self.search.search_by_string_inside_file()
 
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
-            #raise
+        except Exception:
+            #logger.error("Unexpected errors" ,sys.exc_info()[0])
+            print("Unexpected error:", "search_option_advanced")
 
     def search_by_option(self, option):
         if self.validate_number.is_number(option):
