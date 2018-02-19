@@ -1,19 +1,29 @@
-from menu import MenuParameter
-from menu import Util_Disk
-from src.com.jalasoft.search_files.utils.ValidatorNumber import ValidatorNumber
-from src.com.jalasoft.search_files.utils.logging import logger
+from src.com.jalasoft.search_files.menu.menu import MenuParameter
+from src.com.jalasoft.search_files.menu.menu import Util_Disk
+from src.com.jalasoft.search_files.utils.validatorNumber import ValidatorNumber
+from src.com.jalasoft.search_files.utils.logging_search import logger
 
 class MainMenu():
+
     validate_number = ValidatorNumber()
     menu_option = MenuParameter()
     get_disks = Util_Disk()
 
     def search_by_option(self, option):
         if self.validate_number.is_number(option) == True:
+            logger.info("search_by_option: Enter basic or advanced search")
             if option == 1:
                 self.menu_option.search_option_basic()
             elif option == 2:
                 self.menu_option.search_option_advanced()
+            elif option == 3:
+                logger.info("search_by_option: Reading LEEME.txt")
+                f = open('LEEME.txt', 'r')
+                print("Reading...")
+                print("----------------------------------------------------------------------")
+                print(f.read())
+                print("----------------------------------------------------------------------")
+                f.close()
         else:
             return "Error : That is not valid option. Try again..."
 
@@ -30,9 +40,10 @@ class MainMenu():
         try:
             option_search_file = 10
             while (option_search_file > 0):
-                print(' Search file or folder by:')
+                print('Search file or folder by: ')
                 print("1 - Search Basic")
                 print("2 - Search Advanced")
+                print("3 - About Search File")
                 option_search_file = int(input('Enter option:'))
                 self.search_by_option(option_search_file)
         except ValueError:
