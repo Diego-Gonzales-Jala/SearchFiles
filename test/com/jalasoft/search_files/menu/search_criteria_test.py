@@ -12,7 +12,7 @@ class SearchCriteriaTest(unittest.TestCase):
         self.assertIsInstance(self.search_criteria_t,SearchCriteria)
 
     def test_is_instance_of_menu_parameter(self):
-        self.assertIsInstance(self.menu_parameter,MenuParameter)
+        self.assertIsInstance(self.menu_parameter, MenuParameter)
 
     def test_set_size_criteria_with_valid_parameter(self):
         self.search_criteria_t.set_size_criteria('=',10,'mb')
@@ -73,6 +73,41 @@ class SearchCriteriaTest(unittest.TestCase):
         self.search_criteria_t.set_file_owner('Administrators')
         owner = str(self.search_criteria_t.get_file_owner())
         self.assertEqual('Administrators', owner)
+
+    def test_set_search_type_for_searching(self):
+        self.search_criteria_t.set_search_type(1)
+        self.assertEqual(1, self.search_criteria_t.get_search_type())
+
+    def test_set_content_of_file_for_searching(self):
+        self.search_criteria_t.set_word_into_file('maria')
+        self.assertEqual('maria', self.search_criteria_t.get_word_into_file())
+
+    def test_get_all_data_of_dictionary(self):
+        create_date_start = '2018/12/12'
+        create_date_end = '2018/12/14'
+        self.search_criteria_t.set_search_type(1)
+        self.search_criteria_t.set_path('D:\materias\JALA\python\devFund2_py\\ui2')
+        self.search_criteria_t.set_file_owner('Administrators')
+        self.search_criteria_t.set_file_name('nani.txt')
+        self.search_criteria_t.set_extension('.txt')
+        self.search_criteria_t.set_create_date(create_date_start, create_date_end)
+        self.search_criteria_t.set_access_date(create_date_start, create_date_end)
+        self.search_criteria_t.set_modified_date(create_date_start, create_date_end)
+        self.search_criteria_t.set_word_into_file('comments')
+        self.assertEqual({
+                "search_type": 1,
+                "file_name": 'nani.txt',
+                "path": 'D:\materias\JALA\python\devFund2_py\\ui2',
+                "owner": 'Administrators',
+                "create_date": {"c_start_date": '2018/12/12', "c_end_date": '2018/12/14'},
+                "modified_date": {"m_start_date": '2018/12/12', "m_end_date": '2018/12/14'},
+                "access_date": {"a_start_date": '2018/12/12', "a_end_date": '2018/12/14'},
+                "file_extension": '.txt',
+                "word_into_file": 'comments'}, self.search_criteria_t.get_dictionary())
+
+    def test_get_array_of_size_criteria(self):
+        self.search_criteria_t.set_size_criteria('=', 10, 'mb')
+        self.assertEqual(['=',10,'mb'],self.search_criteria_t.get_size_criteria())
 
 
 if __name__ == "__main__":

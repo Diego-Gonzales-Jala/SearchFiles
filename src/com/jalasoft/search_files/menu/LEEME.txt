@@ -1,12 +1,11 @@
-
 For searching files or directories.
 ----------------------------------
 Search Basic
 ----------------------------------
 1. Search all files when does exist only path 
 2. Search files with path and file name with or without extension
-3. Search files with path and extestion
-4. Search files with path, file name and extestion
+3. Search files with path and extension
+4. Search files with path, file name and extension
 5. Search files with path and owner
 6. Search files with path, file name, owner and extension 
 
@@ -26,3 +25,5 @@ Search Advanced
 	2.3 Files by access date with path and date range
 
 3. Search files by content into them
+
+@copyright Diego Gonzales, Wilma Paca and Jose Vallejos

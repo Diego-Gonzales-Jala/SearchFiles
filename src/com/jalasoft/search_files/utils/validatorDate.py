@@ -1,8 +1,11 @@
 import re
 from src.com.jalasoft.search_files.utils.logging_search import logger
 
+
 class ValidatorDate:
 
+    #This method validate a right format # MM/DD/YYYY, on Search it is using format date as YYYY/MM/DD
+    #that is whay it is converted.
     def validate_format_date(self, date):
         date_split = date.split("/")
         convert_date = str(date_split[1]) + "/" + str(date_split[2]) + "/" + str(date_split[0])
