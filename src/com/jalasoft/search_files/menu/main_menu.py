@@ -1,5 +1,5 @@
 from src.com.jalasoft.search_files.menu.menu import MenuParameter
-from src.com.jalasoft.search_files.menu.menu import Util_Disk
+from src.com.jalasoft.search_files.menu.util_disk import UtilDisk
 from src.com.jalasoft.search_files.utils.validatorNumber import ValidatorNumber
 from src.com.jalasoft.search_files.utils.logging_search import logger
 
@@ -7,10 +7,11 @@ class MainMenu():
 
     validate_number = ValidatorNumber()
     menu_option = MenuParameter()
-    get_disks = Util_Disk()
+    get_disks = UtilDisk()
 
+    # Enter basic or advanced option to search a file with some parameters
     def search_by_option(self, option):
-        if self.validate_number.is_number(option) == True:
+        if self.validate_number.is_number(option):
             logger.info("search_by_option: Enter basic or advanced search")
             if option == 1:
                 self.menu_option.search_option_basic()
@@ -27,6 +28,7 @@ class MainMenu():
         else:
             return "Error : That is not valid option. Try again..."
 
+    # Main method , call submenu  with search options
     def menu_main(self):
         print(" -------------- Search directories and files ----------------------")
         print("Following devices are available to search :)")
@@ -36,6 +38,7 @@ class MainMenu():
         print("-------------------------------------")
         self.sub_menu()
 
+    #Display the options for searching
     def sub_menu(self, catch=None):
         try:
             option_search_file = 10

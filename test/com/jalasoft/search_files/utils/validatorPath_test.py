@@ -61,6 +61,7 @@ class ValidatorPath_test(unittest.TestCase):
         extesion = ".tx"
         self.assertFalse(self.valid.validate_extension(path, extesion))
 
+
 if __name__ == "__main__":
 	unittest.main()
 
