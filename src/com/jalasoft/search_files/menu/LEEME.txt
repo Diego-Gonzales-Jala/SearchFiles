@@ -1,0 +1,29 @@
+For searching files or directories.
+----------------------------------
+Search Basic
+----------------------------------
+1. Search all files when does exist only path 
+2. Search files with path and file name with or without extension
+3. Search files with path and extension
+4. Search files with path, file name and extension
+5. Search files with path and owner
+6. Search files with path, file name, owner and extension 
+
+----------------------------------
+Search Advanced
+----------------------------------
+1. Search files by size
+	1.1 files greater than <1> <kb>
+	1.2 files less than <1> <kb>
+	1.3 files equal to <1> <kb>
+	1.4 files greater than and equal to <1> <kb>
+	1.5 files less than and equal to <1> <kb>
+
+2. Search files by date
+	2.1 Files by create date with path and date range
+	2.2 Files by modified date with path and date range
+	2.3 Files by access date with path and date range
+
+3. Search files by content into them
+
+@copyright Diego Gonzales, Wilma Paca and Jose Vallejos

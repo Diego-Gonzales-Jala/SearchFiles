@@ -1,4 +1,6 @@
 class SearchCriteria:
+
+    #Builter of SearchCriteria class
     def __init__(self):
         self.search_criteria = {
             "search_type": '',
@@ -11,7 +13,7 @@ class SearchCriteria:
             "file_extension": '',
             "word_into_file": ''}
 
-        self.size_criteria = ['=', '', 'MB']
+        self.size_criteria = ['', '', 'MB']
 
     # Get file name of dictionary
     def get_file_name(self):
@@ -111,8 +113,8 @@ class SearchCriteria:
 
     # Set create date of file into dictionary
     def set_access_date(self, start_date, end_date):
-        self.search_criteria['modified_date']['a_start_date'] = start_date
-        self.search_criteria['modified_date']['a_end_date'] = end_date
+        self.search_criteria['access_date']['a_start_date'] = start_date
+        self.search_criteria['access_date']['a_end_date'] = end_date
 
     # Set file extension into dictionary
     def set_extension(self, extension):
